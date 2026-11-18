@@ -1,0 +1,122 @@
+[
+  {
+    "resource_id": "RES-HOSP-001",
+    "name": "Metro Central Trauma Center",
+    "resource_type": "Hospital",
+    "location": "Central District, 450 Medical Heights Blvd",
+    "description": "Level 1 Trauma Center with 24/7 emergency room, intensive care unit, and advanced surgical trauma teams.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-15T08:00:00Z",
+    "availability_status": "Available - 14 ICU beds, 4 Trauma bays"
+  },
+  {
+    "resource_id": "RES-HOSP-002",
+    "name": "Riverside Community Hospital",
+    "resource_type": "Hospital",
+    "location": "Riverside District, 120 Riverpark Way",
+    "description": "General acute care medical facility specializing in emergency medicine, hypothermia treatment, and minor surgery.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-16T10:30:00Z",
+    "availability_status": "Available - 8 ER beds, 2 Ambulances standby"
+  },
+  {
+    "resource_id": "RES-HOSP-003",
+    "name": "St. Jude Children's Urgent Care",
+    "resource_type": "Hospital",
+    "location": "North District, 88 Schoolhouse Lane",
+    "description": "Pediatric emergency and critical care center equipped for child medical stabilization and trauma support.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-17T09:15:00Z",
+    "availability_status": "Available - 10 Pediatric beds"
+  },
+  {
+    "resource_id": "RES-SHEL-001",
+    "name": "Highland High School Evacuation Shelter",
+    "resource_type": "Shelter",
+    "location": "North District, 200 Academic Ave",
+    "description": "Designated municipal disaster shelter with emergency power generation, cots, potable water, and basic first aid station.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-15T12:00:00Z",
+    "availability_status": "Available - Capacity: 350 persons"
+  },
+  {
+    "resource_id": "RES-SHEL-002",
+    "name": "Riverdale Civic Arena Emergency Shelter",
+    "resource_type": "Shelter",
+    "location": "Riverside District, 500 Arena Drive",
+    "description": "Large-capacity indoor staging shelter with high-ground elevation, dry food reserves, pet holding area, and hygiene facilities.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-16T14:00:00Z",
+    "availability_status": "Available - Capacity: 800 persons"
+  },
+  {
+    "resource_id": "RES-FIRE-001",
+    "name": "Station 4 Urban Fire & Rescue",
+    "resource_type": "Fire & Rescue",
+    "location": "Downtown Core, 310 Maple Street",
+    "description": "Urban fire response unit with heavy extrication gear, 100-ft aerial ladder truck, and advanced life support pumper.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-17T07:45:00Z",
+    "availability_status": "Available - 2 Engines, 1 Ladder, 1 ALS Medic"
+  },
+  {
+    "resource_id": "RES-FIRE-002",
+    "name": "Station 9 Wildfire & Brush Response Unit",
+    "resource_type": "Fire & Rescue",
+    "location": "West Valley Ridge, 740 Foothill Road",
+    "description": "Wildland-urban interface fire apparatus with 4x4 brush trucks, foam suppression systems, and thermal imaging cameras.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-17T06:00:00Z",
+    "availability_status": "Available - 3 Brush Patrols, 1 Water Tender (3000 Gal)"
+  },
+  {
+    "resource_id": "RES-BOAT-001",
+    "name": "Rapid Waters Swiftwater Rescue Taskforce",
+    "resource_type": "Water Rescue",
+    "location": "Riverside District, Pier 12 Boat Basin",
+    "description": "Specialized flood evacuation and swiftwater extraction unit with 4 motorized Zodiac inflatable rescue boats and certified rescue divers.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-16T16:20:00Z",
+    "availability_status": "Available - 4 Rescue Boats, 8 Swiftwater Technicians"
+  },
+  {
+    "resource_id": "RES-HAZM-001",
+    "name": "Tri-County Hazmat Containment Unit",
+    "resource_type": "Hazmat",
+    "location": "Industrial Park East, 99 Refinery Road",
+    "description": "Certified Level A/B chemical, biological, and toxic gas leak response team with air monitoring sensors and neutralizer agents.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-14T11:00:00Z",
+    "availability_status": "Available - 1 Heavy Hazmat Truck, Decon Shower Trailer"
+  },
+  {
+    "resource_id": "RES-MED-001",
+    "name": "Mobile Disaster Medical Unit Alpha",
+    "resource_type": "Mobile Medical",
+    "location": "Central Fleet Depot, 55 Logistics Parkway",
+    "description": "Rapid deployable field medical trailer equipped for triage, field triage stabilization, oxygen therapy, and stretcher transport.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-17T08:30:00Z",
+    "availability_status": "Available - Ready for dispatch within 15 minutes"
+  },
+  {
+    "resource_id": "RES-SAR-001",
+    "name": "K9 Urban Search & Rescue Team",
+    "resource_type": "Search & Rescue",
+    "location": "Valley Base, 102 Airport Road",
+    "description": "Urban collapse and wilderness search team featuring 4 certified scent-detection canines, acoustic listening devices, and fiber-optic probes.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-15T15:00:00Z",
+    "availability_status": "Available - 4 Handler/Dog Teams Standby"
+  },
+  {
+    "resource_id": "RES-GEN-001",
+    "name": "Emergency Logistics & Power Reserve",
+    "resource_type": "Logistics & Power",
+    "location": "Industrial District, 12 Depot Blvd",
+    "description": "Emergency municipal reserve supplying heavy diesel generators, flood barriers, sandbags, and high-capacity portable pumps.",
+    "source": "ResQAI Synthetic Demonstration Dataset - Fictional (Non-operational)",
+    "last_updated": "2026-11-16T09:00:00Z",
+    "availability_status": "Available - 6 Mobile Generators, 2500 Sandbags, 4 Submersible Pumps"
+  }
+]

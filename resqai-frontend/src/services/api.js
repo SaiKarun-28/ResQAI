@@ -5,7 +5,13 @@ async function request(path, { signal, ...options } = {}) {
   const timeout = new AbortController();
   const timer = setTimeout(() => timeout.abort(), 120_000);
   try {
-    const response = await fetch(`${BASE_URL}/api${path}`, {
+    // If BASE_URL is set, use it directly without adding /api if the path already includes it
+    // Or if path already contains /api, don't double it.
+    const url = BASE_URL
+      ? `${BASE_URL}${path.startsWith('/api') ? path : '/api' + path}`
+      : `/api${path}`;
+
+    const response = await fetch(url, {
       ...options,
       signal: signal ? AbortSignal.any([signal, timeout.signal]) : timeout.signal,
       headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...options.headers },
@@ -15,7 +21,7 @@ async function request(path, { signal, ...options } = {}) {
     try {
       data = text ? JSON.parse(text) : null;
     } catch {
-      throw new Error(`The API returned an invalid response (HTTP ${response.status}). Check that the backend is running and the API URL is correct.`);
+      throw new Error(`The API returned an invalid response (HTTP ${response.status}). Check that the backend is running and the API URL is correct. Response was: ${text.substring(0, 50)}...`);
     }
     if (!response.ok) {
       const detail = data?.detail;

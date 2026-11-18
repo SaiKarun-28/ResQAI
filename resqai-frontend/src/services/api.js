@@ -5,8 +5,9 @@ async function request(path, { signal, ...options } = {}) {
   const timeout = new AbortController();
   const timer = setTimeout(() => timeout.abort(), 120_000);
   try {
-    // If BASE_URL is set, use it directly without adding /api if the path already includes it
-    // Or if path already contains /api, don't double it.
+    // Corrected logic:
+    // 1. If BASE_URL is provided, we use it as the absolute prefix.
+    // 2. We append the path. If path does NOT start with /api, we prepend /api.
     const url = BASE_URL
       ? `${BASE_URL}${path.startsWith('/api') ? path : '/api' + path}`
       : `/api${path}`;
@@ -16,13 +17,16 @@ async function request(path, { signal, ...options } = {}) {
       signal: signal ? AbortSignal.any([signal, timeout.signal]) : timeout.signal,
       headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...options.headers },
     });
-    const text = await response.text();
-    let data;
-    try {
-      data = text ? JSON.parse(text) : null;
-    } catch {
-      throw new Error(`The API returned an invalid response (HTTP ${response.status}). Check that the backend is running and the API URL is correct. Response was: ${text.substring(0, 50)}...`);
+
+    // Check if we are getting HTML instead of JSON
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+        const text = await response.text();
+        throw new Error(`The API returned an invalid response (Content-Type: ${contentType}). Check that the backend is running and the API URL is correct. Response: ${text.substring(0, 50)}...`);
     }
+
+    const data = await response.json();
+
     if (!response.ok) {
       const detail = data?.detail;
       const message = Array.isArray(detail)

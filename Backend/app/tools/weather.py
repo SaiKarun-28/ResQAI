@@ -8,6 +8,7 @@ import numpy as np
 import openmeteo_requests
 import pandas as pd
 import requests_cache
+import logging
 from retry_requests import retry
 
 from app.schemas.weather import CurrentWeather, HourlyWeather, WeatherResponse

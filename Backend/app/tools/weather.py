@@ -141,6 +141,8 @@ class WeatherService:
         self._lock = Lock()
         self._session = None
         self._client = None
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger("resqai.tools.weather")
 
     def _get_client(self):
         # Lazy initialization: importing the app/startup never contacts the provider.
@@ -197,14 +199,16 @@ class WeatherService:
                     timeout=REQUEST_TIMEOUT_SECONDS,
                     allow_redirects=False,
                 )
-            except Exception:
+            except Exception as e:
+                self.logger.error(f"Weather API request failed: {e}")
                 self._discard_client()
                 raise WeatherUnavailable() from None
             try:
                 if len(responses) != 1:
                     raise ValueError("Expected one weather response")
                 return _parse_response(responses[0], latitude, longitude)
-            except Exception:
+            except Exception as e:
+                self.logger.error(f"Weather API response parsing failed: {e}")
                 self._discard_client()
                 raise InvalidWeatherResponse() from None
         finally:

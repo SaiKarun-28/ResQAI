@@ -11,3 +11,8 @@
 }
 
 /* Keep Leaflet panes below application navigation, with readable native controls. */
+.weather-map {
+  height: 380px;
+  width: 100%;
+  z-index: 0;
+}

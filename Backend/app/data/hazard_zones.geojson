@@ -1,0 +1,65 @@
+{
+  "type": "FeatureCollection",
+  "name": "ResQAI_Synthetic_Hazard_Zones",
+  "description": "Fictional synthetic hazard zones for the ResQAI decision-support prototype. Not operational emergency data. For a real emergency in India call 112.",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "HZ-FLOOD-001",
+        "hazard_type": "flood",
+        "name": "Riverside Lowland Flood Zone",
+        "coverage": "Synthetic demo polygon near Riverside district"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [72.80, 19.00],
+          [72.90, 19.00],
+          [72.92, 19.10],
+          [72.82, 19.12],
+          [72.78, 19.06],
+          [72.80, 19.00]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "HZ-CYCLONE-001",
+        "hazard_type": "cyclone",
+        "name": "Coastal Cyclone Exposure Zone",
+        "coverage": "Synthetic demo polygon near coastal tract"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [72.80, 18.92],
+          [72.86, 18.92],
+          [72.86, 18.98],
+          [72.80, 18.98],
+          [72.80, 18.92]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "HZ-FIRE-001",
+        "hazard_type": "fire",
+        "name": "Central Dense-Built Fire Risk Zone",
+        "coverage": "Synthetic demo polygon near Central district"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [72.84, 19.04],
+          [72.89, 19.04],
+          [72.89, 19.08],
+          [72.84, 19.08],
+          [72.84, 19.04]
+        ]]
+      }
+    }
+  ]
+}

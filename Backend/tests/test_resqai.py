@@ -166,7 +166,7 @@ def test_incident_trace_endpoint():
     assert trace_data["incident_id"] == created_id
     assert "agents" in trace_data
     assert "trace" in trace_data
-    assert len(trace_data["trace"]) == 5
+    assert len(trace_data["trace"]) == 6
 
     # Check that each trace item has agent name, status, duration, and summary
     for item in trace_data["trace"]:

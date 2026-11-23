@@ -18,7 +18,9 @@ def offline_isolated_backend(monkeypatch):
     from app.api import routes
     from app.orchestrator import workflow
     from app.tools import llm_client, resource_search
+    from app.database import wipe_database
 
+    wipe_database()
     for key in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GROQ_API_KEY"):
         monkeypatch.setenv(key, "")
     for module in (config, llm_client):

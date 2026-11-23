@@ -18,6 +18,20 @@ class HumanReviewRequest(BaseModel):
     reviewer_notes: Optional[str] = Field(default="", description="Operator or dispatcher notes")
     reviewer_id: Optional[str] = Field(default="operator_on_duty", description="Reviewer identifier")
 
+# Phase 2: Location and Transcript Request Models
+class LocationUpdateRequest(BaseModel):
+    latitude: float = Field(..., ge=-90, le=90, description="Latitude in decimal degrees")
+    longitude: float = Field(..., ge=-180, le=180, description="Longitude in decimal degrees")
+    accuracy: Optional[float] = Field(default=None, ge=0, description="Accuracy in meters")
+    source: Literal["browser_gps", "manual_pin", "manual_text", "unknown"] = Field(
+        ..., description="Source of location data"
+    )
+    timestamp: str = Field(..., description="ISO 8601 timestamp when location was captured")
+
+class TranscriptUpdateRequest(BaseModel):
+    transcript: str = Field(..., max_length=10000, description="Voice transcript text")
+    confidence: Optional[float] = Field(default=None, ge=0.0, le=1.0, description="Speech recognition confidence score")
+
 # Internal Agent Schema Models
 class IncidentRecord(BaseModel):
     category: str = Field(default="Unknown", description="Incident category (e.g. Flood, Fire, Medical, Hazmat)")
@@ -89,10 +103,60 @@ class HumanReviewRecord(BaseModel):
     reviewer_notes: Optional[str] = None
     reviewer_id: Optional[str] = None
     reviewed_at: Optional[str] = None
+    plan_version: Optional[int] = None
     dispatch_authorization_disclaimer: str = (
         "Human review recorded. This approval is an advisory decision-support record "
         "and does NOT constitute official emergency dispatch authorization."
     )
+
+class LocationData(BaseModel):
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    accuracy: Optional[float] = None
+    source: str = "unknown"
+    timestamp: Optional[str] = None
+
+class HazardAssessment(BaseModel):
+    status: str = "unknown_due_to_coverage_or_missing_data"
+    source: Optional[str] = None
+    date: Optional[str] = None
+    coverage: Optional[str] = None
+    hazard_type: Optional[str] = None
+    inside_polygon: Optional[bool] = None
+    location_lat: Optional[float] = None
+    location_lon: Optional[float] = None
+    polygon_id: Optional[str] = None
+
+class RescuePlan(BaseModel):
+    id: str = ""
+    incident_id: str = ""
+    version: int = 1
+    plan_json: Dict[str, Any] = {}
+    assumptions: List[str] = []
+    evidence_references: List[str] = []
+    verification_result: Dict[str, Any] = {}
+    created_at: Optional[str] = None
+    invalidated_at: Optional[str] = None
+
+class DispatchRequest(BaseModel):
+    id: int
+    incident_id: str
+    plan_id: str
+    resource_category: str
+    quantity: int
+    status: str
+    rationale: str
+    is_simulated: bool = True
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+class AuditEvent(BaseModel):
+    id: int
+    incident_id: str
+    actor: str
+    action: str
+    details: Dict[str, Any] = {}
+    timestamp: Optional[str] = None
 
 # Exact API Contract Response Model
 class IncidentResponse(BaseModel):
@@ -112,6 +176,10 @@ class IncidentResponse(BaseModel):
     created_at: Optional[str] = None
     trace: Optional[List[AgentTraceItem]] = None
     human_review: Optional[HumanReviewRecord] = None
+    location_data: Optional[LocationData] = None
+    hazard_assessment: Optional[HazardAssessment] = None
+    rescue_plan: Optional[RescuePlan] = None
+    dispatch_requests: List[Dict[str, Any]] = []
     disclaimer: str = (
         "ResQAI is an experimental AI decision-support prototype. "
         "It is NOT an official emergency dispatch system and cannot authorize or dispatch emergency services."

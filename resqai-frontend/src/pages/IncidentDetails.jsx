@@ -50,6 +50,10 @@ export default function IncidentDetails({ incidentId }) {
     }
   }
 
+  const rescuePlan = incident?.rescue_plan;
+  const dispatchRequests = incident?.dispatch_requests || [];
+  const approved = incident?.human_review?.reviewed && incident.human_review.decision === 'approve';
+
   return (
     <div className="max-w-7xl mx-auto space-y-4 [overflow-wrap:anywhere]">
       <a href="#/history" className="text-sm text-accent-amber underline">Back to Incident History</a>
@@ -63,7 +67,10 @@ export default function IncidentDetails({ incidentId }) {
           <p className="text-sm text-text-muted">{incident.disclaimer}</p>
         </header>
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 items-start">
-          <div className="xl:col-span-2 min-w-0"><IncidentAssessment incident={incident} /></div>
+          <div className="xl:col-span-2 min-w-0 space-y-4">
+            <IncidentAssessment incident={incident} />
+            <RescuePlanSection plan={rescuePlan} />
+          </div>
           <div className="space-y-4 min-w-0">
             <AgentMonitor agents={incident.agents} trace={incident.trace || []} />
             <section className="bg-panel border border-border-default rounded-lg p-4 space-y-3">
@@ -92,9 +99,70 @@ export default function IncidentDetails({ incidentId }) {
               {reviewError && <p role="alert" className="text-sm text-red-300">{reviewError}</p>}
               {reviewMessage && <p role="status" className="text-sm text-emerald-300">{reviewMessage}</p>}
             </section>
+            <DispatchSection requests={dispatchRequests} approved={approved} />
           </div>
         </div>
       </>}
     </div>
+  );
+}
+
+function RescuePlanSection({ plan }) {
+  if (!plan) return null;
+  return (
+    <section className="bg-panel border border-border-default rounded-lg p-4 space-y-3">
+      <h2 className="text-lg font-semibold text-accent-amber">Rescue Plan</h2>
+      <div className="text-sm text-text-muted space-y-1">
+        <p>Plan ID: {plan.id} · Version {plan.version}</p>
+        {plan.created_at && <p className="text-xs">Created: {new Date(plan.created_at).toLocaleString()}</p>}
+      </div>
+      {Array.isArray(plan.plan_json?.actions) && plan.plan_json.actions.length > 0 && (
+        <ol className="space-y-2 text-sm">
+          {plan.plan_json.actions.map((action, index) => (
+            <li key={index} className="bg-surface rounded-lg p-3 space-y-1">
+              <p className="font-medium">{action.step}. {action.action}</p>
+              {action.rationale && <p className="text-text-muted">{action.rationale}</p>}
+              <p className="text-xs text-text-muted">
+                Type: {action.action_type}
+                {action.assigned_resource_id ? ` · Resource: ${action.assigned_resource_id}` : ''}
+              </p>
+            </li>
+          ))}
+        </ol>
+      )}
+      {plan.verification_result && (
+        <p className="text-xs text-text-muted">
+          Verification status: <strong>{plan.verification_result.status}</strong>
+        </p>
+      )}
+    </section>
+  );
+}
+
+function DispatchSection({ requests, approved }) {
+  if (!requests.length) return null;
+  const label = (status) =>
+    status === 'approved_simulated' ? 'Approved (simulated)' : status === 'created_simulated' ? 'Awaiting approval' : status;
+  return (
+    <section className="bg-panel border border-border-default rounded-lg p-4 space-y-3">
+      <h2 className="text-lg font-semibold text-accent-amber">Simulated Dispatch Requests</h2>
+      <p className="text-xs text-text-muted">
+        Records of proposed responder requests. Never a live dispatch — all simulated.
+        {approved ? '' : ' Awaiting human approval to confirm.'}
+      </p>
+      <ul className="space-y-2 text-sm">
+        {requests.map((req) => (
+          <li key={req.id} className="bg-surface rounded-lg p-3 space-y-1">
+            <p className="font-medium">{req.resource_category} × {req.quantity}</p>
+            <p className="text-xs text-text-muted">{req.rationale}</p>
+            <p className="text-xs">
+              <span className={req.status === 'approved_simulated' ? 'text-emerald-300' : 'text-amber-300'}>
+                {label(req.status)}
+              </span>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

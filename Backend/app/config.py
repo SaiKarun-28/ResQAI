@@ -13,6 +13,11 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or "
 GROQ_API_KEY = os.getenv("GROQ_API_KEY") or ""
 
 # LLM Selection
+# Current Google AI Studio model names (as of 2025):
+# - gemini-3.8-flash: Latest Flash model
+# - gemini-3.5-flash-lite: Lightweight Flash model (recommended for cost/performance)
+# - gemini-3.1-flash-lite: Earlier lightweight model
+# Note: gemini-1.5 and gemini-2.0 series are deprecated/shut down
 DEFAULT_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 DEFAULT_GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 

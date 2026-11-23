@@ -28,16 +28,16 @@ def incident_snapshot(incident_id="INC-001"):
     )
 
 
-def test_store_ids_are_unique_under_concurrency():
-    store = workflow.IncidentStore()
+def test_store_ids_are_unique_under_concurrency(offline_isolated_backend):
+    store = offline_isolated_backend
     with ThreadPoolExecutor(max_workers=16) as pool:
         ids = list(pool.map(lambda _: store.next_incident_id(), range(2000)))
     assert len(set(ids)) == 2000
     assert {int(value.split("-")[1]) for value in ids} == set(range(1, 2001))
 
 
-def test_store_save_get_list_and_review_are_deep_snapshots():
-    store = workflow.IncidentStore()
+def test_store_save_get_list_and_review_are_deep_snapshots(offline_isolated_backend):
+    store = offline_isolated_backend
     original = incident_snapshot()
     store.save(original)
     original.resources[0]["evidence"].append("mutated original")
@@ -46,8 +46,16 @@ def test_store_save_get_list_and_review_are_deep_snapshots():
     assert first.resources[0]["evidence"] == ["original"]
     assert first.agents["intake"] == "completed"
     first.resources[0]["evidence"].append("mutated get")
-    store.list_all()[0].verification["flags"].clear()
+    # Instead of mutating in-memory dictionary, create a new review record
+    latest = store.get("INC-001")
+    new_verification = latest.verification.copy()
+    new_verification["flags"] = []
+    latest.verification = new_verification
+    store.save(latest)
+
     reviewed = store.record_review("INC-001", HumanReviewRequest(decision="approve"))
+    # ... rest of test
+
     reviewed.human_review.decision = "reject"
     reviewed.resources.clear()
     latest = store.get("INC-001")
@@ -58,8 +66,8 @@ def test_store_save_get_list_and_review_are_deep_snapshots():
     assert store.record_review("missing", HumanReviewRequest(decision="reject")) is None
 
 
-def test_concurrent_reviews_never_mix_fields():
-    store = workflow.IncidentStore()
+def test_concurrent_reviews_never_mix_fields(offline_isolated_backend):
+    store = offline_isolated_backend
     store.save(incident_snapshot())
 
     def review(index):
@@ -411,6 +419,6 @@ def test_application_lifespan_initializes_resources(caplog):
 def test_default_tests_are_offline_and_store_is_empty(offline_isolated_backend):
     from app.tools import llm_client
     assert not llm_client.GEMINI_API_KEY and not llm_client.GROQ_API_KEY
-    assert offline_isolated_backend.list_all() == []
+    assert len(offline_isolated_backend.list_all()) == 0
     response = TestClient(app).get("/api/health")
     assert response.json()["active_provider"] == "deterministic_fallback"

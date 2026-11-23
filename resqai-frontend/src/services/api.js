@@ -72,4 +72,11 @@ export const api = {
   reviewIncident: (id, data, options) => request(`/incidents/${encodeURIComponent(id)}/review`, {
     ...options, method: 'POST', body: JSON.stringify(data),
   }),
+  // Phase 2: Location and Transcript updates
+  updateIncidentLocation: (id, locationData, options) => request(`/incidents/${encodeURIComponent(id)}/location`, {
+    ...options, method: 'POST', body: JSON.stringify(locationData),
+  }),
+  updateIncidentTranscript: (id, transcriptData, options) => request(`/incidents/${encodeURIComponent(id)}/transcript`, {
+    ...options, method: 'POST', body: JSON.stringify(transcriptData),
+  }),
 };

@@ -2,10 +2,12 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.config import CORS_ORIGINS
 from app.api.routes import router as api_router
 from app.api.weather import router as weather_router
 from app.tools.resource_search import load_resources, ResourceDatasetError
+from app.database import initialize_database, get_connection
 
 logging.basicConfig(
     level=logging.INFO,
@@ -16,6 +18,8 @@ logger = logging.getLogger("resqai.main")
 
 async def startup_event():
     try:
+        initialize_database()
+        logger.info("Database initialized successfully")
         resources = load_resources()
     except ResourceDatasetError:
         # Keep diagnostics reachable and allow a subsequent load to recover.
